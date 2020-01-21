@@ -274,6 +274,13 @@ const MiniDrawer = props => {
                 </NavLink>
               </ListItemText>
             </ListItem>
+            <ListItem button className="text-center">
+              <ListItemText>
+                <NavLink exact to="/matches" activeClassName="active">
+                  Matches
+                </NavLink>
+              </ListItemText>
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>

@@ -49,7 +49,7 @@ const CreateTeam = () => {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [openModal]);
 
   const handleFormSubmit = e => {
     e.preventDefault();
@@ -157,7 +157,7 @@ const CreateTeam = () => {
           {users.map(data => {
             return (
               <div className="row pt-3 d-flex align-items-center" key={data.id}>
-                <div className="col-md-3">
+                <div className="col-md-3 offset-md-3 text-center">
                   <img src={data.photo} />
                 </div>
                 <div className="col-md-3 text-center">

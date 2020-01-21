@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter, Route, Switch, Router } from "react-router-dom";
 import CreateTeam from "./Pages/createTeam";
+import Matches from "./Pages/matches";
 import history from "./util/history.js";
 import Index from "./Pages/dashboard";
 import SideBar from "./Components/sidebar";
@@ -21,7 +22,7 @@ const Root = () => (
     <Switch>
       <Route path="/team" component={CreateTeam} />
       <Route path="/" exact={true} component={App} />
-      <Route path="/admin" component={Index} />
+      <Route path="/matches" component={Matches} />
     </Switch>
   </Router>
 );
