@@ -1,0 +1,82 @@
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+		"Helvetica Neue", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
+}
+
+.resource-width {
+	width: calc(50% - 0.5rem);
+}
+@media (min-width: 60rem) {
+	.resource-width {
+		width: calc(25% - 1rem);
+	}
+}
+
+@keyframes placeHolderShimmer {
+	0% {
+		background-position: -468px 0;
+	}
+
+	100% {
+		background-position: 468px 0;
+	}
+}
+
+.shimmer {
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+	animation-name: placeHolderShimmer;
+	animation-timing-function: linear;
+	background: #f6f7f8;
+	background: #eeeeee;
+	background: -webkit-gradient(
+		linear,
+		left top,
+		right top,
+		color-stop(8%, #eeeeee),
+		color-stop(18%, #dddddd),
+		color-stop(33%, #eeeeee)
+	);
+	background: -webkit-linear-gradient(
+		left,
+		#eeeeee 8%,
+		#dddddd 18%,
+		#eeeeee 33%
+	);
+	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	-webkit-background-size: 800px 104px;
+}
+
+.sidebar-exit {
+	margin-left: 260px;
+}
+
+@media (max-width: 768px) {
+	.sidebar-exit {
+		margin-left: 0;
+	}
+}
+
+a {
+	text-decoration: none !important;
+	color: #fff !important;
+	text-align: center;
+}
+a:hover {
+	text-decoration: none !important;
+	color: #fff !important;
+}
+
+.active {
+	color: red;
+}
