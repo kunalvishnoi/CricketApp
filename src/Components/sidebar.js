@@ -6,14 +6,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
+
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import Button from "@material-ui/core/Button";
 import "../App.css";
 import TextField from "@material-ui/core/TextField";
@@ -23,8 +21,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
-import Resource from "./resource";
-import { NavLink, withRouter } from "react-router-dom";
+// import Resource from "./resource";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -100,8 +98,8 @@ const MiniDrawer = props => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(isOpen);
   const [user, changeUser] = React.useState(false);
-  const [email, changeEmail] = React.useState("");
-  const [password, changePassword] = React.useState("");
+  const [email, changeEmail] = React.useState("admin");
+  const [password, changePassword] = React.useState("admin@123");
 
   const [openModal, setOpenModal] = React.useState(false);
 
@@ -129,6 +127,7 @@ const MiniDrawer = props => {
   const logOut = () => {
     localStorage.removeItem("token");
     changeUser(false);
+    window.location.reload();
   };
 
   const handleEmailChange = e => {
@@ -162,6 +161,7 @@ const MiniDrawer = props => {
         localStorage.setItem("token", res.data.auth_token);
         changeUser(true);
         setOpenModal(false);
+        window.location.reload();
       })
       .catch(err => {
         console.log(err);
@@ -267,20 +267,28 @@ const MiniDrawer = props => {
         >
           <div className={classes.toolbar}>JSS Noida Cricket Team</div>
           <List>
-            <ListItem button className="text-center">
-              <ListItemText>
-                <NavLink exact to="/team" activeClassName="active">
-                  Team
-                </NavLink>
-              </ListItemText>
-            </ListItem>
-            <ListItem button className="text-center">
-              <ListItemText>
-                <NavLink exact to="/matches" activeClassName="active">
-                  Matches
-                </NavLink>
-              </ListItemText>
-            </ListItem>
+            <NavLink exact to="/team" activeClassName="active">
+              <ListItem button className="text-center">
+                <ListItemText>Team</ListItemText>
+              </ListItem>
+            </NavLink>
+            <NavLink exact to="/matches" activeClassName="active">
+              <ListItem button className="text-center">
+                <ListItemText>Matches</ListItemText>
+              </ListItem>
+            </NavLink>
+            <NavLink exact to="/tournaments" activeClassName="active">
+              <ListItem button className="text-center">
+                <ListItemText>Tournaments</ListItemText>
+              </ListItem>
+            </NavLink>
+            {user ? (
+              <NavLink exact to="/record" activeClassName="active">
+                <ListItem button className="text-center">
+                  <ListItemText>Add Record</ListItemText>
+                </ListItem>
+              </NavLink>
+            ) : null}
           </List>
         </Drawer>
         <main className={classes.content}>

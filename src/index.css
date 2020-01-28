@@ -12,59 +12,49 @@ code {
 		monospace;
 }
 
-.resource-width {
-	width: calc(50% - 0.5rem);
-}
-@media (min-width: 60rem) {
-	.resource-width {
-		width: calc(25% - 1rem);
-	}
+*:focus {
+	outline: 0 !important;
 }
 
-@keyframes placeHolderShimmer {
-	0% {
-		background-position: -468px 0;
-	}
-
-	100% {
-		background-position: 468px 0;
-	}
+.custom-loader {
+	height: calc(80vh);
+	position: relative;
 }
 
-.shimmer {
-	animation-duration: 1s;
-	animation-fill-mode: forwards;
-	animation-iteration-count: infinite;
-	animation-name: placeHolderShimmer;
-	animation-timing-function: linear;
-	background: #f6f7f8;
-	background: #eeeeee;
-	background: -webkit-gradient(
-		linear,
-		left top,
-		right top,
-		color-stop(8%, #eeeeee),
-		color-stop(18%, #dddddd),
-		color-stop(33%, #eeeeee)
-	);
-	background: -webkit-linear-gradient(
-		left,
-		#eeeeee 8%,
-		#dddddd 18%,
-		#eeeeee 33%
-	);
-	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-	-webkit-background-size: 800px 104px;
+.custom-loader .circle {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	animation: custom-loader-anim 2.1s infinite ease-out;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	background: var(--primary);
+}
+
+.custom-loader .circle.delay-1 {
+	animation-delay: 0.7s;
+}
+
+.custom-loader .circle.delay-2 {
+	animation-delay: 1.4s;
+}
+
+@keyframes custom-loader-anim {
+	from {
+		transform: translate(-50%, -50%) scale(0);
+		opacity: 1;
+	}
+	to {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0;
+	}
 }
 
 .sidebar-exit {
 	margin-left: 260px;
-}
-
-@media (max-width: 768px) {
-	.sidebar-exit {
-		margin-left: 0;
-	}
 }
 
 a {
@@ -74,9 +64,59 @@ a {
 }
 a:hover {
 	text-decoration: none !important;
-	color: #fff !important;
+	color: red !important;
 }
 
 .active {
-	color: red;
+	color: red !important;
+}
+
+.stats-back {
+	padding: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	border-radius: 5px;
+	box-shadow: 10px 10px 5px grey;
+}
+.stats-back:hover {
+	background-color: rgba(15, 218, 234, 0.1);
+}
+
+.match-card {
+	background-color: #ececec;
+	padding: 10px 20px;
+	width: 100%;
+}
+.match-card p {
+	font-weight: bold;
+	margin: 0;
+}
+
+.match-circle {
+	background-color: #fff;
+	border-radius: 50%;
+	border: 3px solid grey;
+	width: 100px;
+	height: 100px;
+}
+.green-circle {
+	background-color: #fff;
+	border-radius: 50%;
+	border: 3px solid #37ae27;
+	width: 100px;
+	height: 100px;
+	position: relative;
+}
+.green-circle img {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	bottom: 0px;
+	right: 0px;
+}
+
+@media (max-width: 768px) {
+	.sidebar-exit {
+		margin-left: 0;
+	}
 }

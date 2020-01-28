@@ -1,6 +1,6 @@
 import React from "react";
-import SideBar from "../Components/sidebar";
-import { isMobile } from ".././util/helpers";
+// import SideBar from "../Components/sidebar";
+// import { isMobile } from ".././util/helpers";
 
 class Admin extends React.Component {
   render() {

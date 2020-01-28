@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { isLoggedIn } from "../util/helpers";
-
+import Loader from "../Components/loader";
 class CreateTeam extends React.Component {
   state = {
     team1: "",
@@ -16,19 +15,24 @@ class CreateTeam extends React.Component {
     time: "",
     venue: "",
     modal: false,
-    details: []
+    past: [],
+    future: [],
+    isLoading: true
   };
   componentDidMount() {
     axios
       .get("https://pure-reaches-06765.herokuapp.com/api/v1/matches")
       .then(res => {
         this.setState({
-          details: res.data
+          past: res.data.past,
+          future: res.data.upcoming,
+          isLoading: false
         });
-        console.log(res);
       })
       .catch(err => {
-        console.log(err);
+        this.setState({
+          isLoading: false
+        });
       });
   }
 
@@ -94,12 +98,13 @@ class CreateTeam extends React.Component {
     month[9] = "October";
     month[10] = "November";
     month[11] = "December";
-
     var n = month[time.getMonth()];
-    return time.getDay() + " " + n;
+
+    var year = time.getYear() + 1900;
+    return time.getDate() + " " + n + " " + year;
   };
   render() {
-    const { team1, team2, time, venue, modal, details } = this.state;
+    const { team1, team2, time, venue, modal, past, future } = this.state;
 
     return (
       <>
@@ -161,37 +166,141 @@ class CreateTeam extends React.Component {
           </DialogActions>
         </Dialog>
         <div className="sidebar-exit">
-          {isLoggedIn() ? (
-            <button className="btn btn-primary" onClick={this.handleClose}>
-              Add Matches
-            </button>
-          ) : null}
-          <div className="container">
-            <h1 className="text-center">College Matches</h1>
-            {details.map(data => {
-              return (
-                <div
-                  className="row pt-3 d-flex align-items-center"
-                  key={data.id}
-                >
-                  <div className="col-md-12 text-center">
-                    <p>
-                      Team1: <b>{data.team1}</b>
-                    </p>
-                    <p>
-                      Team2: <b>{data.team2}</b>
-                    </p>
-                    <p>
-                      Venue: <b>{data.venue}</b>
-                    </p>
-                    <p>
-                      Time: <b>{this.getMonthData(data.time)}</b>
-                    </p>
-                  </div>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              {isLoggedIn() ? (
+                <button className="btn btn-primary" onClick={this.handleClose}>
+                  Add Matches
+                </button>
+              ) : null}
+              <div className="container">
+                <h3 className="text-center">Upcoming Matches</h3>
+                <div className="row">
+                  {future.map(data => {
+                    return (
+                      <div className="col-md-6 mt-3 text-center " key={data.id}>
+                        <div className="match-card">
+                          <p>
+                            {this.getMonthData(data.time)} , {data.venue}
+                          </p>
+                          <div
+                            className="row mt-3"
+                            style={{ alignItems: "center" }}
+                          >
+                            <div className="col-3">
+                              <p>{data.team1}</p>
+                            </div>
+                            <div className="col-3">
+                              <div
+                                className={` ${
+                                  data.winner === "data.team1"
+                                    ? "green-circle"
+                                    : "match-circle"
+                                }`}
+                              >
+                                {data.winner === data.team1 ? (
+                                  <img
+                                    src="https://i.ibb.co/f00mMVx/noun-tick-2881366.png"
+                                    alt="noun-tick-2881366"
+                                    border="0"
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+
+                            <div className="col-3">
+                              <div
+                                className={` ${
+                                  data.winner === "data.team1"
+                                    ? "green-circle"
+                                    : "match-circle"
+                                }`}
+                              >
+                                {data.winner === data.team1 ? (
+                                  <img
+                                    src="https://i.ibb.co/f00mMVx/noun-tick-2881366.png"
+                                    alt="noun-tick-2881366"
+                                    border="0"
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-3">
+                              <p>{data.team2}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
+                <h3 className="text-center mt-5">Past Matches</h3>
+
+                <div className="row ">
+                  {past.map(data => {
+                    return (
+                      <div className="col-md-6 mt-3 text-center " key={data.id}>
+                        <div className="match-card">
+                          <p>
+                            {this.getMonthData(data.time)} , {data.venue}
+                          </p>
+                          <div
+                            className="row mt-3"
+                            style={{ alignItems: "center" }}
+                          >
+                            <div className="col-3">{data.team1}</div>
+                            <div className="col-3">
+                              <div
+                                className={` ${
+                                  data.winner === data.team1
+                                    ? "green-circle"
+                                    : "match-circle"
+                                }`}
+                              >
+                                {data.winner === data.team1 ? (
+                                  <img
+                                    src="https://i.ibb.co/f00mMVx/noun-tick-2881366.png"
+                                    alt="noun-tick-2881366"
+                                    border="0"
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+
+                            <div className="col-3">
+                              <div
+                                className={` ${
+                                  data.winner === data.team1
+                                    ? "green-circle"
+                                    : "match-circle"
+                                }`}
+                              >
+                                {data.winner === data.team1 ? (
+                                  <img
+                                    src="https://i.ibb.co/f00mMVx/noun-tick-2881366.png"
+                                    alt="noun-tick-2881366"
+                                    border="0"
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-3">{data.team2}</div>
+                          </div>
+                          <p className="mt-2">
+                            {data.winner === null
+                              ? null
+                              : `Won By ${data.winner}`}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </>
     );

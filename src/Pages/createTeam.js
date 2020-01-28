@@ -3,13 +3,12 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { isLoggedIn } from "../util/helpers";
-
-const CreateTeam = () => {
+import Loader from "../Components/loader";
+const CreateTeam = props => {
   const [openModal, setOpenModal] = useState(false);
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState("");
@@ -17,6 +16,7 @@ const CreateTeam = () => {
   const [description, setDescription] = useState("");
   const [year, setYear] = useState("");
   const [users, setData] = useState([]);
+  const [isLoading, changeLoading] = useState(true);
 
   const handleClose = () => {
     setOpenModal(false);
@@ -45,9 +45,11 @@ const CreateTeam = () => {
       .get("https://pure-reaches-06765.herokuapp.com/api/v1/users")
       .then(res => {
         setData(res.data);
+        changeLoading(false);
       })
       .catch(err => {
         console.log(err);
+        changeLoading(false);
       });
   }, [openModal]);
 
@@ -82,6 +84,10 @@ const CreateTeam = () => {
       .catch(err => {
         console.log(err);
       });
+  };
+
+  const showDetail = row => {
+    props.history.push("/stats", row);
   };
   return (
     <>
@@ -144,32 +150,42 @@ const CreateTeam = () => {
         </DialogActions>
       </Dialog>
       <div className="sidebar-exit">
-        {isLoggedIn() ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => setOpenModal(true)}
-          >
-            Add Player
-          </button>
-        ) : null}
-        <div className="container">
-          <h1 className="text-center">JSS Cricket Team Player</h1>
-          {users.map(data => {
-            return (
-              <div className="row pt-3 d-flex align-items-center" key={data.id}>
-                <div className="col-md-3 offset-md-3 text-center">
-                  <img src={data.photo} />
-                </div>
-                <div className="col-md-3 text-center">
-                  <p>{data.name}</p>
-                  <p>{data.description}</p>
-                  <p>{data.phone}</p>
-                  <p>{data.passout_year}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {isLoggedIn() ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => setOpenModal(true)}
+              >
+                Add Player
+              </button>
+            ) : null}
+            <div className="container">
+              <h1 className="text-center">JSS Cricket Team Player</h1>
+              {users.map(data => {
+                return (
+                  <div
+                    className="row pt-3 d-flex align-items-center"
+                    key={data.id}
+                    onClick={() => showDetail(data)}
+                  >
+                    <div className="col-md-3 offset-md-3 text-center">
+                      <img src={data.photo} alt="player" />
+                    </div>
+                    <div className="col-md-3 text-center">
+                      <p>{data.name}</p>
+                      <p>{data.description}</p>
+                      <p>{data.phone}</p>
+                      <p>{data.passout_year}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
