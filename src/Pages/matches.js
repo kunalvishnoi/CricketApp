@@ -8,7 +8,7 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { isLoggedIn } from "../util/helpers";
 import Loader from "../Components/loader";
-class CreateTeam extends React.Component {
+class Matches extends React.Component {
   state = {
     team1: "",
     team2: "",
@@ -19,7 +19,7 @@ class CreateTeam extends React.Component {
     future: [],
     isLoading: true
   };
-  componentDidMount() {
+  handleData = () => {
     axios
       .get("https://pure-reaches-06765.herokuapp.com/api/v1/matches")
       .then(res => {
@@ -34,6 +34,9 @@ class CreateTeam extends React.Component {
           isLoading: false
         });
       });
+  };
+  componentDidMount() {
+    this.handleData();
   }
 
   handleChange = e => {
@@ -63,7 +66,8 @@ class CreateTeam extends React.Component {
       team1,
       team2,
       venue,
-      time: d
+      time: d,
+      winner: "JSS 11"
     };
 
     axios
@@ -73,7 +77,7 @@ class CreateTeam extends React.Component {
         options
       )
       .then(res => {
-        console.log(res);
+        this.handleData();
 
         this.setState({
           modal: false
@@ -176,7 +180,9 @@ class CreateTeam extends React.Component {
                 </button>
               ) : null}
               <div className="container">
-                <h3 className="text-center">Upcoming Matches</h3>
+                {future && future.length > 0 ? (
+                  <h3 className="text-center">Upcoming Matches</h3>
+                ) : null}
                 <div className="row">
                   {future.map(data => {
                     return (
@@ -236,10 +242,13 @@ class CreateTeam extends React.Component {
                     );
                   })}
                 </div>
-                <h3 className="text-center mt-5">Past Matches</h3>
+                {past && past.length > 0 ? (
+                  <h3 className="text-center mt-5">Past Matches</h3>
+                ) : null}
 
                 <div className="row ">
                   {past.map(data => {
+                    console.log();
                     return (
                       <div className="col-md-6 mt-3 text-center " key={data.id}>
                         <div className="match-card">
@@ -272,12 +281,12 @@ class CreateTeam extends React.Component {
                             <div className="col-3">
                               <div
                                 className={` ${
-                                  data.winner === data.team1
+                                  data.winner === data.team2
                                     ? "green-circle"
                                     : "match-circle"
                                 }`}
                               >
-                                {data.winner === data.team1 ? (
+                                {data.winner === data.team2 ? (
                                   <img
                                     src="https://i.ibb.co/f00mMVx/noun-tick-2881366.png"
                                     alt="noun-tick-2881366"
@@ -307,4 +316,4 @@ class CreateTeam extends React.Component {
   }
 }
 
-export default CreateTeam;
+export default Matches;

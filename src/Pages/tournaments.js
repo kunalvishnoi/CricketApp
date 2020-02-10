@@ -185,30 +185,34 @@ class CreateTeam extends React.Component {
                 </button>
               ) : null}
               <div className="container">
-                <h1 className="text-center">College Tournaments</h1>
-                {details.map(data => {
-                  return (
-                    <div
-                      className="row pt-3 d-flex align-items-center"
-                      key={data.id}
-                    >
-                      <div className="col-md-12 text-center">
-                        <p>
-                          Name: <b>{data.name}</b>
-                        </p>
-                        <p>
-                          Venue: <b>{data.venue}</b>
-                        </p>
-                        <p>
-                          Result: <b>{data.result}</b>
-                        </p>
-                        <p>
-                          Date: <b>{this.getMonthData(data.date)}</b>
-                        </p>
+                <h1 className="text-center">Tournament Winners</h1>
+                <div className="row pt-3">
+                  {details.map(data => {
+                    return (
+                      <div className="col-md-3 mt-2 text-center" key={data.id}>
+                        <div className="match-card">
+                          <p>
+                            <b>
+                              {data.name} , {data.venue}
+                            </b>
+                          </p>
+                          <p>
+                            <b>{this.getMonthData(data.date)}</b>
+                          </p>
+                          <img
+                            src="https://raw.githubusercontent.com/kunalvishnoi/zzarvis_portfolio/5eff333893bee3cdba179915dd18c5b83ae7fc68/img/trophy-on-blue-background-770.png"
+                            style={{ width: "70%" }}
+                            className="my-3"
+                          />
+
+                          <h3>
+                            <b>{data.result}</b>
+                          </h3>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </>
           )}

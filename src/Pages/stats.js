@@ -1,25 +1,28 @@
 import React from "react";
 import axios from "axios";
+import Accordion from "../Components/accordion";
 class Stats extends React.Component {
-  constructor(props) {
-    super(props);
-    this.player = "";
-    if (this.props.location.state) {
-      this.player = this.props.location.state;
-    } else {
-      this.props.history.replace("/team");
-    }
-    this.state = {
-      currentState: "batting",
-      batStat: {},
-      bowlStat: {}
-    };
-  }
+  state = {
+    batStat: {},
+    bowlStat: {},
+    player: {}
+  };
+
   componentDidMount() {
     axios
       .get(
+        "https://pure-reaches-06765.herokuapp.com/api/v1/users/" +
+          this.props.match.params.playerId
+      )
+      .then(res => {
+        this.setState({
+          player: res.data
+        });
+      });
+    axios
+      .get(
         "https://pure-reaches-06765.herokuapp.com/api/v1/users/performance/" +
-          this.player.id
+          this.props.match.params.playerId
       )
       .then(res => {
         this.setState({
@@ -28,63 +31,213 @@ class Stats extends React.Component {
         });
       });
   }
-  changeHandle = status => {
-    this.setState({
-      currentState: status
-    });
-  };
+
   render() {
     const { currentState, batStat, bowlStat } = this.state;
     const batOverall = batStat && batStat.overall;
     const bowlOverall = bowlStat && bowlStat.overall;
+    const batMatchWise = batStat && batStat.match_wise;
+    const bowlMatchWise = bowlStat && bowlStat.match_wise;
+    console.log(this.state);
+    const avg =
+      batOverall &&
+      batOverall.total_runs / (batOverall.total_matches - batOverall.notouts);
+    const sr = batOverall && batOverall.total_runs / batOverall.total_balls;
+    const eco = bowlOverall && bowlOverall.total_runs / bowlOverall.total_overs;
+    const bavg =
+      bowlOverall && bowlOverall.total_runs / bowlOverall.total_wickets;
     return (
       <div className="sidebar-exit">
-        <div className="container-fluid">
-          <div className="row">
-            <div
-              className={`col-md-4 offset-md-1 stats-back text-center ${
-                currentState === "batting"
-                  ? "bg-primary text-white"
-                  : "bg-light text-black"
-              }`}
-              onClick={this.changeHandle.bind(this, "batting")}
-            >
-              <span>Batting</span>
-            </div>
-            <div
-              className={`col-md-4 offset-md-1 stats-back text-center ${
-                currentState === "bowling"
-                  ? "bg-primary text-white"
-                  : "bg-light text-black"
-              }`}
-              onClick={this.changeHandle.bind(this, "bowling")}
-            >
-              <span>Bowling</span>
-            </div>
-          </div>
-          <p className="text-center mt-5">{this.player.name}</p>
+        <div className="container">
+          <h2 className="text-center">{this.state.player.name}</h2>
+          {batOverall && batOverall.total_matches === 0 ? (
+            <h4 className="text-center">No Batting Stat</h4>
+          ) : (
+            <>
+              <h4 className="text-center my-3">Batting Stat</h4>
+              <div className="row">
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.total_matches}</b>
+                    </span>
+                    <span>
+                      <b>Matches</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.total_runs}</b>
+                    </span>
+                    <span>
+                      <b>Runs</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.notouts}</b>
+                    </span>
+                    <span>
+                      <b>Not Outs</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.total_sixes}</b>
+                    </span>
+                    <span>
+                      <b>Sixes</b>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.total_fours}</b>
+                    </span>
+                    <span>
+                      <b>Fours</b>
+                    </span>
+                  </div>
+                </div>
+                <div className=" col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{batOverall && batOverall.total_balls}</b>
+                    </span>
+                    <span>
+                      <b>Total Balls</b>
+                    </span>
+                  </div>
+                </div>
+                <div className=" offset-md-4 col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{avg == "Infinity" ? batOverall.total_runs : avg}</b>
+                    </span>
+                    <span>
+                      <b>Average</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{sr}</b>
+                    </span>
+                    <span>
+                      <b>Strike Rates</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {batMatchWise &&
+                batMatchWise.map((data, index) => {
+                  return (
+                    <div key={index} className="col-md-12">
+                      <Accordion title={data} />
+                    </div>
+                  );
+                })}
+            </>
+          )}
+          <br />
+          <br />
+          {bowlOverall && bowlOverall.total_matches === 0 ? (
+            <h4 className="text-center">No Bowling Stat</h4>
+          ) : (
+            <>
+              <h4 className="text-center">Bowling Stat</h4>
+              <div className="row">
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bowlOverall && bowlOverall.total_matches}</b>
+                    </span>
+                    <span>
+                      <b>Matches</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bowlOverall && bowlOverall.total_overs}</b>
+                    </span>
+                    <span>
+                      <b>Overs</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bowlOverall && bowlOverall.total_runs}</b>
+                    </span>
+                    <span>
+                      <b>Runs</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bowlOverall && bowlOverall.total_wickets}</b>
+                    </span>
+                    <span>
+                      <b>Wickets</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{eco}</b>
+                    </span>
+                    <span>
+                      <b>Economy</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bavg}</b>
+                    </span>
+                    <span>
+                      <b>Average</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 col-4 mt-2">
+                  <div className="stat-card">
+                    <span>
+                      <b>{bavg}</b>
+                    </span>
+                    <span>
+                      <b>Average</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {bowlMatchWise &&
+                bowlMatchWise.map((data, index) => {
+                  return (
+                    <div key={index} className="col-md-12">
+                      <Accordion title={data} />
+                    </div>
+                  );
+                })}
+            </>
+          )}
         </div>
-        {currentState === "batting" ? (
-          <div className="container mt-5">
-            <div className="row">
-              {batOverall && batOverall.total_matches === 0 ? (
-                <p>No stats To show</p>
-              ) : (
-                <p>Batting</p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="container mt-5">
-            <div className="row">
-              {bowlOverall && bowlOverall.total_matches === 0 ? (
-                <p>No stats To show</p>
-              ) : (
-                <p>Bowling</p>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     );
   }

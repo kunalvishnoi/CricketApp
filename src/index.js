@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { Route, Switch, Router } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import CreateTeam from "./Pages/createTeam";
 import Matches from "./Pages/matches";
 import Tournaments from "./Pages/tournaments";
@@ -19,17 +19,17 @@ import Stats from "./Pages/stats";
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 const Root = () => (
-  <Router history={history}>
+  <BrowserRouter>
     <SideBar isMobile={isMobile()} />
     <Switch>
-      <Route path="/team" component={CreateTeam} />
-      <Route path="/stats" exact={true} component={Stats} />
+      <Route path="/team" component={CreateTeam} exact />
       <Route path="/" exact={true} component={App} />
-      <Route path="/matches" component={Matches} />
-      <Route path="/tournaments" component={Tournaments} />
+      <Route path="/matches" component={Matches} exact />
+      <Route path="/tournaments" component={Tournaments} exact />
+      <Route path="/stats/:playerId" component={Stats} exact />
       <PrivateRoute path="/record" component={Record} />
     </Switch>
-  </Router>
+  </BrowserRouter>
 );
 ReactDOM.render(<Root />, document.getElementById("root"));
 serviceWorker.unregister();

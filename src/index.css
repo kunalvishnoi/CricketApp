@@ -115,8 +115,44 @@ a:hover {
 	right: 0px;
 }
 
+.card {
+	box-shadow: 0px 0px 5px grey;
+	width: 90%;
+}
+.card-text {
+	font-size: 26px;
+	margin: 0;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+.team-description {
+	font-weight: bold;
+}
+
+.stat-card {
+	background-color: #fff;
+	box-shadow: 0px 0px 5px grey;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px;
+	flex-direction: column;
+}
+
 @media (max-width: 768px) {
 	.sidebar-exit {
 		margin-left: 0;
 	}
+	.card {
+		width: 100%;
+	}
+}
+
+.teamdetail {
+	color: #000 !important;
+}
+
+.teamdetail:hover {
+	color: #000 !important;
+	cursor: pointer;
 }

@@ -8,6 +8,7 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { isLoggedIn } from "../util/helpers";
 import Loader from "../Components/loader";
+import { NavLink } from "react-router-dom";
 const CreateTeam = props => {
   const [openModal, setOpenModal] = useState(false);
   const [name, setName] = useState("");
@@ -67,7 +68,7 @@ const CreateTeam = props => {
       photo,
       phone,
       passout_year: year,
-      Description: description
+      description
     };
 
     axios
@@ -86,9 +87,6 @@ const CreateTeam = props => {
       });
   };
 
-  const showDetail = row => {
-    props.history.push("/stats", row);
-  };
   return (
     <>
       <Dialog
@@ -164,25 +162,36 @@ const CreateTeam = props => {
             ) : null}
             <div className="container">
               <h1 className="text-center">JSS Cricket Team Player</h1>
-              {users.map(data => {
-                return (
-                  <div
-                    className="row pt-3 d-flex align-items-center"
-                    key={data.id}
-                    onClick={() => showDetail(data)}
-                  >
-                    <div className="col-md-3 offset-md-3 text-center">
-                      <img src={data.photo} alt="player" />
+              <div className="row pt-3 d-flex align-items-center">
+                {users.map(data => {
+                  return (
+                    <div key={data.id} className="col-md-4 my-2 text-center">
+                      <div className="card">
+                        <NavLink
+                          to={`/stats/${data.id}`}
+                          className="teamdetail"
+                        >
+                          <img
+                            className="card-img-top"
+                            src={data.photo}
+                            alt="player"
+                          />
+                          <div className="card-body">
+                            <p className="card-text">{data.name}</p>
+                            <span className="team-description">
+                              {data.description} , {data.passout_year} year
+                            </span>
+                            <br />
+                            <span>
+                              Contact: <b>{data.phone}</b>
+                            </span>
+                          </div>
+                        </NavLink>
+                      </div>
                     </div>
-                    <div className="col-md-3 text-center">
-                      <p>{data.name}</p>
-                      <p>{data.description}</p>
-                      <p>{data.phone}</p>
-                      <p>{data.passout_year}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </>
         )}

@@ -265,7 +265,14 @@ const MiniDrawer = props => {
           }}
           open={open}
         >
-          <div className={classes.toolbar}>JSS Noida Cricket Team</div>
+          <div className={classes.toolbar}>
+            <img
+              src="https://i.ibb.co/Bwcx4TY/Asset-3-10x-1.png"
+              alt="Asset-3-10x-1"
+              border="0"
+              style={{ width: "60%" }}
+            />
+          </div>
           <List>
             <NavLink exact to="/team" activeClassName="active">
               <ListItem button className="text-center">
@@ -289,6 +296,19 @@ const MiniDrawer = props => {
                 </ListItem>
               </NavLink>
             ) : null}
+            <a
+              href="http://jsscricket.herokuapp.com/"
+              className="btn btn-primary d-flex mx-auto w-75"
+              target="_blank"
+            >
+              <div className="MuiButtonBase-root MuiListItem-root text-center MuiListItem-gutters MuiListItem-button">
+                <div className="MuiListItemText-root">
+                  <span className="MuiTypography-root MuiListItemText-primary MuiTypography-body1">
+                    Donate Us
+                  </span>
+                </div>
+              </div>
+            </a>
           </List>
         </Drawer>
         <main className={classes.content}>
