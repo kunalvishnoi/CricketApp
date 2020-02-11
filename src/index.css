@@ -146,6 +146,21 @@ a:hover {
 	.card {
 		width: 100%;
 	}
+	.match-circle {
+		width: 50px;
+		height: 50px;
+	}
+	.green-circle {
+		width: 50px;
+		height: 50px;
+	}
+
+	.green-circle img {
+		width: 15px;
+		height: 15px;
+		bottom: 0px;
+		right: 0px;
+	}
 }
 
 .teamdetail {

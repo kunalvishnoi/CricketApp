@@ -98,8 +98,8 @@ const MiniDrawer = props => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(isOpen);
   const [user, changeUser] = React.useState(false);
-  const [email, changeEmail] = React.useState("admin");
-  const [password, changePassword] = React.useState("admin@123");
+  const [email, changeEmail] = React.useState("");
+  const [password, changePassword] = React.useState("");
 
   const [openModal, setOpenModal] = React.useState(false);
 
@@ -114,6 +114,12 @@ const MiniDrawer = props => {
   function handleDrawerOpen() {
     setOpen(prevState => !prevState);
   }
+
+  const changeOpenClose = () => {
+    if (props.isMobile) {
+      setOpen(false);
+    }
+  };
 
   useEffect(() => {
     if (
@@ -274,23 +280,53 @@ const MiniDrawer = props => {
             />
           </div>
           <List>
-            <NavLink exact to="/team" activeClassName="active">
+            <NavLink
+              onClick={changeOpenClose}
+              exact
+              to="/team"
+              activeClassName="active"
+            >
               <ListItem button className="text-center">
                 <ListItemText>Team</ListItemText>
               </ListItem>
             </NavLink>
-            <NavLink exact to="/matches" activeClassName="active">
+            <NavLink
+              exact
+              to="/matches"
+              activeClassName="active"
+              onClick={changeOpenClose}
+            >
               <ListItem button className="text-center">
                 <ListItemText>Matches</ListItemText>
               </ListItem>
             </NavLink>
-            <NavLink exact to="/tournaments" activeClassName="active">
+            <NavLink
+              exact
+              to="/tournaments"
+              activeClassName="active"
+              onClick={changeOpenClose}
+            >
               <ListItem button className="text-center">
                 <ListItemText>Tournaments</ListItemText>
               </ListItem>
             </NavLink>
+            <NavLink
+              exact
+              to="/gallery"
+              activeClassName="active"
+              onClick={changeOpenClose}
+            >
+              <ListItem button className="text-center">
+                <ListItemText>Gallery</ListItemText>
+              </ListItem>
+            </NavLink>
             {user ? (
-              <NavLink exact to="/record" activeClassName="active">
+              <NavLink
+                exact
+                to="/record"
+                activeClassName="active"
+                onClick={changeOpenClose}
+              >
                 <ListItem button className="text-center">
                   <ListItemText>Add Record</ListItemText>
                 </ListItem>

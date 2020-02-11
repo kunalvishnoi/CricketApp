@@ -169,7 +169,7 @@ class Matches extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <div className="sidebar-exit">
+        <div className="sidebar-exit mb-5">
           {this.state.isLoading ? (
             <Loader />
           ) : (
