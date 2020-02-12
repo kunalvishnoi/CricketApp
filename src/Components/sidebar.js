@@ -320,6 +320,16 @@ const MiniDrawer = props => {
                 <ListItemText>Gallery</ListItemText>
               </ListItem>
             </NavLink>
+            <NavLink
+              exact
+              to="/support"
+              activeClassName="active"
+              onClick={changeOpenClose}
+            >
+              <ListItem button className="text-center">
+                <ListItemText>Support</ListItemText>
+              </ListItem>
+            </NavLink>
             {user ? (
               <NavLink
                 exact
